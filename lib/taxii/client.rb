@@ -68,6 +68,13 @@ module Taxii
       parsed['Feed_Information_Response'].fetch('Feed',[])
     end
 
+    def discover_collections(url=self.collection_management_service_url)
+      msg  = Taxii::Messages::CollectionInformationRequest.new.to_xml
+      http  = build_request(url: url, payload: msg)
+      parsed  = xml.parse(http.execute.body)
+      parsed['Collection_Information_Response'].fetch('Collection',[])
+    end
+
     def scheme_protocol
       case URI.parse(url).scheme
         when "http"
