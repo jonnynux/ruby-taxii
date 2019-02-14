@@ -4,10 +4,19 @@ module Taxii
 
     PARSE_OPTIONS = Nokogiri::XML::ParseOptions::DEFAULT_XML | Nokogiri::XML::ParseOptions::NOBLANKS
     CONTENT_XPATH = '/taxii_11:Poll_Response/taxii_11:Content_Block/taxii_11:Content'
+    COUNT_XPATH = '/taxii_11:Poll_Response/taxii_11:Record_Count'
 
     def get( poll_request_message, url: self.poll_service_url)
       msg = format_request(poll_request_message)
       build_request(url: url, payload: msg).execute
+    end
+
+    def get_count( poll_request_message,
+                   url: self.poll_service_url,
+                   xpath: COUNT_XPATH )
+      response = self.get(poll_request_message, url: url)
+      content_xml = Nokogiri::XML(response.body,nil,nil,PARSE_OPTIONS)
+      content_xml.xpath(xpath).children.first.content.to_i
     end
 
     def get_content_blocks( poll_request_message,
