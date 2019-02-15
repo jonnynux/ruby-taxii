@@ -11,10 +11,12 @@ require 'taxii/messages'
 require 'taxii/messages/parameters'
 require 'taxii/messages/discovery_request'
 require 'taxii/messages/poll_request'
+require 'taxii/messages/push_request'
 require 'taxii/messages/feed_information_request'
 require 'taxii/messages/collection_information_request'
 require 'taxii/client'
 require 'taxii/poll_client'
+require 'taxii/push_client'
 
 module Taxii
   def self.configure(config: File.join(ENV['HOME'],'.taxii.json'), client: PollClient)

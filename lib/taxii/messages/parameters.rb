@@ -37,6 +37,22 @@ module Taxii
           Gyoku.xml({'taxii_11:Poll_Parameters': content_hash}, key_converter: :none)
         end
       end
+
+      class Push < Hashie::Dash
+        property :content_binding
+        property :content
+
+        def to_h
+          {
+            'taxii_11:Content_Binding/': { '@binding_id':content_binding },
+            'taxii_11:Content!': content
+          }
+        end
+        def to_xml
+          Gyoku.xml({'taxii_11:Content_Block': to_h}, key_converter: :none)
+        end
+      end
+
     end
   end
 end
